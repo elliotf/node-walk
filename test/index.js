@@ -12,6 +12,16 @@ describe("walk", function() {
     base = __dirname + '/fixtures/';
   });
 
+  describe("when given an invalid base path", function() {
+    it("returns an err and no paths", function(done) {
+      walk(base + 'does_not_exist', function(err, paths){
+        should.exist(err);
+        should.not.exist(paths);
+        done();
+      });
+    });
+  });
+
   describe("when walking directories", function() {
     it("returns the basepath", function(done) {
       walk(base + 'sub/sub_sub', function(err, paths){
