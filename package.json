@@ -11,5 +11,8 @@
     "node": "*"
   },
   "dependencies": {
+  },
+  "scripts": {
+    "test": "make test"
   }
 }
