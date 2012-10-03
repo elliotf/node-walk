@@ -1,6 +1,5 @@
 var chai    = require('chai')
     should  = chai.should()
-    mkdirp  = require('mkdirp')
     async   = require('async')
     walk    = require('../')
 ;
@@ -10,13 +9,8 @@ chai.Assertion.includeStack = true;
 describe("walk", function() {
   var base;
 
-  beforeEach(function(done) {
+  beforeEach(function() {
     base = __dirname + '/fixtures/';
-
-    async.parallel([
-        function(cb){ mkdirp(base + 'sub/sub_sub', cb); }
-      , function(cb){ mkdirp(base + 'sub2',        cb); }
-    ], done);
   });
 
   describe("when given an invalid base path", function() {
@@ -35,6 +29,7 @@ describe("walk", function() {
         should.not.exist(err);
         paths.should.deep.equal({
           '': 'd'
+          , '.keep': 'f'
         });
         done();
       });
@@ -43,16 +38,18 @@ describe("walk", function() {
     it("returns sub paths found", function(done) {
       walk(base + 'sub', function(err, paths){
         should.not.exist(err);
+
         paths.should.have.keys(
           [
-            '', 'sub_sub'
+            '', 'sub_sub', 'sub_sub/.keep'
           ]
         );
 
         paths.should.deep.equal({
           '': 'd'
           , 'sub_sub': 'd'
-        })
+          , 'sub_sub/.keep': 'f'
+        });
 
         done();
       });
@@ -63,7 +60,7 @@ describe("walk", function() {
         should.not.exist(err);
         paths.should.have.keys(
           [
-            '', 'sub', 'sub2', 'sub3', 'sub/sub_sub'
+            '', 'sub', 'sub2', 'sub2/.keep', 'sub3', 'sub/sub_sub', 'sub/sub_sub/.keep'
           ]
         );
 
@@ -71,8 +68,10 @@ describe("walk", function() {
           '': 'd'
           , 'sub': 'd'
           , 'sub2': 'd'
+          , 'sub2/.keep': 'f'
           , 'sub3': 'f'
           , 'sub/sub_sub': 'd'
+          , 'sub/sub_sub/.keep': 'f'
         })
         done();
       });
