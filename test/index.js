@@ -1,8 +1,8 @@
 var chai    = require('chai')
-    should  = chai.should()
     async   = require('async')
     walk    = require('../')
 ;
+global.should = chai.should();
 
 chai.Assertion.includeStack = true;
 
@@ -26,6 +26,7 @@ describe("walk", function() {
   describe("when walking directories", function() {
     it("returns the basepath", function(done) {
       walk(base + 'sub/sub_sub', function(err, paths){
+        console.log("ERR: ", err);
         should.not.exist(err);
         paths.should.deep.equal({
           '': 'd'
