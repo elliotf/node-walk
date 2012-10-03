@@ -4,13 +4,15 @@
   "version": "1.0.0",
   "devDependencies": {
     "mocha": "~1.5.0",
-    "chai": "~1.2.0"
+    "chai": "~1.2.0",
+    "mkdirp": "~0.3.4"
   },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
   },
   "dependencies": {
+    "async": "~0.1.22"
   },
   "scripts": {
     "test": "make test"

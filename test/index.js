@@ -1,5 +1,7 @@
 var chai    = require('chai')
     should  = chai.should()
+    mkdirp  = require('mkdirp')
+    async   = require('async')
     walk    = require('../')
 ;
 
@@ -8,8 +10,13 @@ chai.Assertion.includeStack = true;
 describe("walk", function() {
   var base;
 
-  beforeEach(function() {
+  beforeEach(function(done) {
     base = __dirname + '/fixtures/';
+
+    async.parallel([
+        function(cb){ mkdirp(base + 'sub/sub_sub', cb); }
+      , function(cb){ mkdirp(base + 'sub2',        cb); }
+    ], done);
   });
 
   describe("when given an invalid base path", function() {
